@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        /* Основные параметры */
+        "target": "ES5" /* Указать итоговую версию ECMAScript:
+        'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */,
+        "module": "ESNext" /* Указать тип модулей для генерируемого кода:
+        'commonjs', 'amd', 'system', 'umd' or 'es2015'. */,
+        "moduleResolution": "node" /* Указать вариант анализа модуля:
+        'node' (Node.js) или 'classic' (TypeScript pre-1.6). */,
+        "lib": [
+            "DOM",
+            "ESNext"
+        ] /* Указать файлы библиотеки для включения их
+        в контекст компиляции:  */,
+        "jsx": "react-jsx" /* Указать, компилировать ли JSX: 'preserve',
+        'react-native', or 'react'. */,
+        "isolatedModules": true /* Транспилировать каждый файл как отдельный
+        модуль (аналогично «ts.transpileModule»). */,
+        "esModuleInterop": true,
+        "strict": true /* Включить все параметры для строгой проверки типов.*/,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "allowJs": true /* Разрешить компиляцию JavaScript файлов. */,
+        "sourceMap": true,
+        "allowSyntheticDefaultImports": true /* Разрешить импорт
+        по умолчанию из модулей без экспорта по умолчанию. Это не влияет
+        на генерацию кода, просто проверка типов. */
+    },
+    "outDir": "./dist/",
+    "include": ["src/**/*"]
+}
