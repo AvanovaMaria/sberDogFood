@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { NavLink } from 'react-router-dom';
 import {
   Card,
   CardHeader,
@@ -40,6 +41,7 @@ const CardItem: FC<ProductsCardProps> = ({ item: item }) => {
           <FavoriteBorderIcon fontSize="small" />
         </div>
       </div>
+      <NavLink to={{ pathname: `/product/${item._id}` }}>
       <CardMedia
         component="img"
         height="194"
@@ -47,9 +49,12 @@ const CardItem: FC<ProductsCardProps> = ({ item: item }) => {
         alt=""
         sx={{ margin: "10px" }}
       />
+      </NavLink>
       <CardHeader title={`${item.price} P`} />
       <div>{item.wight}</div>
-       <Typography>{item.name}</Typography>
+      <NavLink style={{ color: "black" }} to={{ pathname: `/product/${item._id}` }}>
+        <Typography>{item.name}</Typography>
+      </NavLink>
       <button
         style={{
           borderRadius: "20px",

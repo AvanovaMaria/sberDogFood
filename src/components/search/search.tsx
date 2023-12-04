@@ -61,10 +61,6 @@ const SearchField: FC<SearchProps> = ({ setQuery }) => {
         setSearchText(e.target.value);
     };
 
-    // const handleClick = () => {
-    //     setSearchText('');
-    // }; // очищение инпута + очищение стейта
-
   return (
     <Search
       sx={{ backgroundColor: "white", color: "black", borderRadius: "40px" }}

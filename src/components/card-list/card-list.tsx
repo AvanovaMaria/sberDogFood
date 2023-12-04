@@ -1,13 +1,13 @@
-import React, { useState, useEffect, FC } from "react";
+import React, { useState, useEffect, FC, useContext } from "react";
 import CardItem from "../card";
 import { Grid, Stack, Typography, Pagination } from "@mui/material";
 import usePagination from "../../hooks/usePagination";
+import { ProductsContext, ProductsContextInterface } from '../../context/product-context'
 
-interface ProductsCardListProps {
-  products: Item[];
-}
 
-const CardList: FC<ProductsCardListProps> = ({ products }) => {
+
+const CardList = () => {
+  const { products } = useContext(ProductsContext) as ProductsContextInterface;
   const PER_PAGE = 12;
   const { currentPage, getCurrentData, setPagePaginate, countPage } =
     usePagination<Item>(products, PER_PAGE);
@@ -38,7 +38,7 @@ const CardList: FC<ProductsCardListProps> = ({ products }) => {
                 sm={6}
                 md={4}
               >
-                <CardItem item={item} />
+                <CardItem key={item._id} item={item} />
               </Grid>
             ))}
           </Grid>
