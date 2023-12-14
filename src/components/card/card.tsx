@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { NavLink } from 'react-router-dom';
+import React, { FC, useContext } from "react";
+import { NavLink } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -12,19 +12,51 @@ import {
   Button,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { isLiked } from "../../utils/products";
+import { UserContext } from "../../context/user-context";
+import {
+  ProductsContext,
+  ProductsContextInterface,
+} from "../../context/product-context";
 
-interface ProductsCardProps {
-  item: Item;
-}
+const CardItem: FC<Item> = ({
+  _id,
+  discount,
+  likes,
+  pictures,
+  price,
+  wight,
+  name,
+}) => {
+  const currentUser = useContext(UserContext) as Author;
+  const { handleProductLike } = useContext(
+    ProductsContext
+  ) as ProductsContextInterface;
 
-const CardItem: FC<ProductsCardProps> = ({ item: item }) => {
+  const like = isLiked(likes, currentUser._id);
+
+  function setColorForIcon() {
+    var iconLikeColor = "";
+    like ? (iconLikeColor = "red") : (iconLikeColor = "black");
+    return iconLikeColor;
+  }
+
   var discountNewContent;
-  if (item.discount !== 0) {
+  if (discount !== 0) {
     discountNewContent = (
-        <div style={{ borderRadius: "15px", backgroundColor: "red", color: "white" }}> - {item.discount} %</div>
-    )
+      <div
+        style={{ borderRadius: "15px", backgroundColor: "red", color: "white" }}
+      >
+        {" "}
+        - {discount} %
+      </div>
+    );
   } else {
-    discountNewContent = null
+    discountNewContent = null;
+  }
+
+  function onProductLike() {
+    handleProductLike({ likes, _id });
   }
 
   return (
@@ -38,22 +70,25 @@ const CardItem: FC<ProductsCardProps> = ({ item: item }) => {
       >
         <div>{discountNewContent}</div>
         <div>
-          <FavoriteBorderIcon fontSize="small" />
+          <Button onClick={onProductLike}>
+            <FavoriteBorderIcon sx={{ color: setColorForIcon() }} fontSize="small" />
+            {likes.length}
+          </Button>
         </div>
       </div>
-      <NavLink to={{ pathname: `/product/${item._id}` }}>
-      <CardMedia
-        component="img"
-        height="194"
-        image={item.pictures ? item.pictures : "https://picsum.photos/480/320"}
-        alt=""
-        sx={{ margin: "10px" }}
-      />
+      <NavLink to={{ pathname: `/product/${_id}` }}>
+        <CardMedia
+          component="img"
+          height="194"
+          image={pictures ? pictures : "https://picsum.photos/480/320"}
+          alt=""
+          sx={{ margin: "10px" }}
+        />
       </NavLink>
-      <CardHeader title={`${item.price} P`} />
-      <div>{item.wight}</div>
-      <NavLink style={{ color: "black" }} to={{ pathname: `/product/${item._id}` }}>
-        <Typography>{item.name}</Typography>
+      <CardHeader title={`${price} P`} />
+      <div>{wight}</div>
+      <NavLink style={{ color: "black" }} to={{ pathname: `/product/${_id}` }}>
+        <Typography>{name}</Typography>
       </NavLink>
       <button
         style={{

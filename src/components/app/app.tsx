@@ -8,7 +8,9 @@ import CardList from "../card-list";
 import Footer from "../footer";
 import SearchField from "../search";
 import SingleItemPage from "../../pages/single-item-page";
+import ProfilePage from "../../pages/profile-page";
 import api from "../../utils/api";
+import { isLiked } from "../../utils/products";
 
 const App = () => {
   const [products, setProducts] = useState<Item[]>([]);
@@ -27,16 +29,32 @@ const App = () => {
     api.search(searchQuery).then((list) => setProducts(list));
   }, [searchQuery]);
 
+  function handleProductLike(productData: ItemLikeParams) {
+    const like = isLiked(productData.likes, currentUser?._id);
+
+    api.changeLikePostStatus(productData._id, like).then((updateProduct) => {
+      const newProductsArray = products.map((currentProduct) =>
+        currentProduct._id === updateProduct._id
+          ? updateProduct
+          : currentProduct
+      );
+      setProducts(newProductsArray);
+    });
+  }
+
   return (
     <>
       <UserContext.Provider value={currentUser}>
-        <ProductsContext.Provider value={{ products }}>
+        <ProductsContext.Provider
+          value={{ products, handleProductLike: handleProductLike }}
+        >
           <Header>
             <SearchField setQuery={handleChangeSearchInput} />
           </Header>
           <Routes>
             <Route path="/" element={<CardList />} />
             <Route path="/product/:productId" element={<SingleItemPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
 

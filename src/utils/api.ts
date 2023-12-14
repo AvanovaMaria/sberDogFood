@@ -39,13 +39,20 @@ export class Api {
 	}
 
     getProductById(productID: string) {
-		return fetch(this.getApiUrl(`/products/${productID}`), {
+		return fetch(this.getApiUrl(`products/${productID}`), {
 			headers: this.headers,
 		}).then(this.onResponse);
 	}
 
     search(searchQuery: string) {
 		return fetch(this.getApiUrl(`products/search?query=${searchQuery}`), {
+			headers: this.headers,
+		}).then(this.onResponse);
+	}
+
+	changeLikePostStatus(postID: string, like: boolean) {
+		return fetch(this.getApiUrl(`products/likes/${postID}`), {
+			method: like ? 'DELETE' : 'PUT',
 			headers: this.headers,
 		}).then(this.onResponse);
 	}
