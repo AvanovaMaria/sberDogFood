@@ -8,14 +8,18 @@ import {
 import { UserContext } from "../../context/user-context";
 import { Container } from "@mui/material";
 import Item from "../../components/item";
+//import { fetchItem } from "../../services/item/itemSlice";
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
 
 const SingleItemPage = () => {
   const [item, setItem] = useState<Item | null>(null);
   const { productId } = useParams();
   const currentUser = useContext(UserContext) as Author;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (productId) {
+      //dispatch(fetchItem(productId));
       api
         .getProductById(productId)
         .then((dataPost) => setItem(dataPost))

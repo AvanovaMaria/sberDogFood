@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useEffect } from "react";
 import { UserContext } from "../../context/user-context";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -6,9 +6,19 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
+import { fetchUsers } from "../../services/user/userSlice";
 
 const ProfilePage = () => {
   const currentUser = useContext(UserContext) as Author;
+  //const currentUser = useAppSelector(state => state.user.data);
+  const dispatch = useAppDispatch();
+
+  // console.log(currentUser);
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []);
 
   return (
     <>

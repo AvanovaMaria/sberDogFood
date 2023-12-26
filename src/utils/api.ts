@@ -5,6 +5,9 @@ type TConfigApi = {
 	headers: HeadersInit;
 };
 
+export type UserEditBodyDto = Pick<Author, 'name' | 'about'>;
+export type ItemEditBodyDto = Pick<Item, '_id'>;
+
 export class Api {
     private baseUrl;
 	private headers;
@@ -29,6 +32,14 @@ export class Api {
     getUserInfo() {
 		return fetch(this.getApiUrl('users/me'), {
 			headers: this.headers,
+		}).then(this.onResponse);
+	}
+
+	setUserInfo(userData: UserEditBodyDto) {
+		return fetch(this.getApiUrl('/users/me/'), {
+			method: 'PATCH',
+			headers: this.headers,
+			body: JSON.stringify(userData),
 		}).then(this.onResponse);
 	}
 
@@ -76,6 +87,14 @@ export class Api {
 		return fetch(this.getApiUrl('products/review/'), {
 			headers: this.headers,
 		}).then(this.onResponse);
+	}
+
+	leaveItemReview(productID: string, postData: Pick<Review, 'text'>) {
+		return fetch(this.getApiUrl('products/review/:productId'), {
+			method: 'POST',
+			headers: this.headers,
+			body: JSON.stringify(postData),
+		}).then(this.onResponse)
 	}
 }
 
