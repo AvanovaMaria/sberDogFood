@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { UserContext } from "../../context/user-context";
-import { isLiked } from "../../utils/products";
+import { setColorForIcon } from "../../utils/cardItemUtils";
 
 const Item: FC<Item> = ({
   _id,
@@ -29,9 +29,8 @@ const Item: FC<Item> = ({
 }) => {
   const [valueRating, setValueRating] = React.useState<number | null>(2);
   const currentUser = useContext(UserContext) as Author;
-  const like = isLiked(likes, currentUser._id);
 
-  var discountNewContent;
+  let discountNewContent;
   if (discount) {
     if (discount !== 0) {
       discountNewContent = (
@@ -51,12 +50,6 @@ const Item: FC<Item> = ({
     }
   } else {
     discountNewContent = null;
-  }
-
-  function setColorForIcon() {
-    var iconLikeColor = "";
-    like ? (iconLikeColor = "red") : (iconLikeColor = "black");
-    return iconLikeColor;
   }
 
   function setRatingStatus() {
@@ -96,11 +89,7 @@ const Item: FC<Item> = ({
         return "отзыв";
 
       case "2":
-        return "отзыва";
-
       case "3":
-        return "отзыва";
-
       case "4":
         return "отзыва";
 
@@ -111,9 +100,9 @@ const Item: FC<Item> = ({
 
   return (
     <>
-      <div style={{ marginBottom: "20px" }}>
-        <NavLink to="/">Назад</NavLink>
-      </div>
+      <NavLink style={{ marginBottom: "20px" }} to="/">
+        Назад
+      </NavLink>
       <div>
         <h2>{name}</h2>
       </div>
@@ -158,7 +147,7 @@ const Item: FC<Item> = ({
               <div>{discountNewContent}</div>
               <div>
                 <FavoriteBorderIcon
-                  sx={{ color: setColorForIcon() }}
+                  sx={{ color: setColorForIcon(likes, currentUser._id) }}
                   fontSize="small"
                 />
                 {likes.length}
@@ -184,10 +173,7 @@ const Item: FC<Item> = ({
               margin: "40px",
             }}
           >
-            <div>
               <CardHeader title={`${price} P`} />
-            </div>
-            <div>
               <Button
                 style={{
                   borderRadius: "20px",
@@ -198,10 +184,9 @@ const Item: FC<Item> = ({
               >
                 В корзину
               </Button>
-            </div>
             <div>
               <h3>Описание:</h3>
-              <div>{description}</div>
+              <span>{description}</span>
             </div>
             <div>
               <h3>Характеристики:</h3>

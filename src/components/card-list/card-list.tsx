@@ -8,13 +8,13 @@ import {
 } from "../../context/product-context";
 import { UserContext } from "../../context/user-context";
 
+const PER_PAGE = 12;
+
 const CardList = () => {
   const { products } = useContext(ProductsContext) as ProductsContextInterface;
   const currentUser = useContext(UserContext) as Author;
-
-  const PER_PAGE = 12;
   const { currentPage, getCurrentData, setPagePaginate, countPage } =
-    usePagination<Item>(products, PER_PAGE);
+  usePagination<Item>(products, PER_PAGE);
 
   function handlePageChange(e: any, page: number) {
     setPagePaginate(page);
@@ -42,10 +42,7 @@ const CardList = () => {
                 sm={6}
                 md={4}
               >
-                <CardItem
-                  key={item._id}
-                  {...item}
-                />
+                <CardItem key={item._id} {...item} />
               </Grid>
             ))}
           </Grid>

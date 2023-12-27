@@ -12,12 +12,13 @@ import {
   Button,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { isLiked } from "../../utils/products";
+import { setColorForIcon } from "../../utils/cardItemUtils";
 import { UserContext } from "../../context/user-context";
 import {
   ProductsContext,
   ProductsContextInterface,
 } from "../../context/product-context";
+
 
 const CardItem: FC<Item> = ({
   _id,
@@ -33,22 +34,12 @@ const CardItem: FC<Item> = ({
     ProductsContext
   ) as ProductsContextInterface;
 
-  const like = isLiked(likes, currentUser._id);
 
-  function setColorForIcon() {
-    var iconLikeColor = "";
-    like ? (iconLikeColor = "red") : (iconLikeColor = "black");
-    return iconLikeColor;
-  }
-
-  var discountNewContent;
+  let discountNewContent;
   if (discount !== 0) {
     discountNewContent = (
-      <div
-        style={{ borderRadius: "15px", backgroundColor: "red", color: "white" }}
-      >
-        {" "}
-        - {discount} %
+      <div style={{ borderRadius: "15px", backgroundColor: "red", color: "white" }}>
+        {" "} - {discount} %
       </div>
     );
   } else {
@@ -68,10 +59,10 @@ const CardItem: FC<Item> = ({
           justifyContent: "space-between",
         }}
       >
-        <div>{discountNewContent}</div>
+        <span>{discountNewContent}</span>
         <div>
           <Button onClick={onProductLike}>
-            <FavoriteBorderIcon sx={{ color: setColorForIcon() }} fontSize="small" />
+            <FavoriteBorderIcon sx={{ color: setColorForIcon(likes, currentUser._id) }} fontSize="small" />
             {likes.length}
           </Button>
         </div>
