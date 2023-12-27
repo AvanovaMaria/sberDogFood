@@ -1,6 +1,7 @@
 import TelegramIcon from '@mui/icons-material/Telegram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import { logo } from '../image/logo';
 
 const Footer = () => {
   return (
@@ -17,7 +18,9 @@ const Footer = () => {
           height: "194px"
         }}
       >
-        <div>Logo</div>
+        <div>
+          {logo}
+        </div>
         <div>
             <div>Каталог</div>
             <div>Акции</div>

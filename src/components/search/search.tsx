@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from '@mui/icons-material/Close';
 import InputBase from "@mui/material/InputBase";
 import { FC } from "react";
 
@@ -35,7 +34,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     height: "28px",
@@ -61,10 +59,6 @@ const SearchField: FC<SearchProps> = ({ setQuery }) => {
         setSearchText(e.target.value);
     };
 
-    // const handleClick = () => {
-    //     setSearchText('');
-    // }; // очищение инпута + очищение стейта
-
   return (
     <Search
       sx={{ backgroundColor: "white", color: "black", borderRadius: "40px" }}
@@ -75,10 +69,9 @@ const SearchField: FC<SearchProps> = ({ setQuery }) => {
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
-        value={searchText} // жестко зафиксировали значение value у инпута
-        onChange={handleChange} // на каждое измение устанавливаем searchText
+        value={searchText}
+        onChange={handleChange}
       />
-     {/* {searchText && <button style={{}} type="button"><CloseIcon onClick={handleClick} /></button>} */}
     </Search>
   );
 };

@@ -1,16 +1,20 @@
-import React, { useState, useEffect, FC } from "react";
+import React, { useState, useEffect, FC, useContext } from "react";
 import CardItem from "../card";
 import { Grid, Stack, Typography, Pagination } from "@mui/material";
 import usePagination from "../../hooks/usePagination";
+import {
+  ProductsContext,
+  ProductsContextInterface,
+} from "../../context/product-context";
+import { UserContext } from "../../context/user-context";
 
-interface ProductsCardListProps {
-  products: Item[];
-}
+const PER_PAGE = 12;
 
-const CardList: FC<ProductsCardListProps> = ({ products }) => {
-  const PER_PAGE = 12;
+const CardList = () => {
+  const { products } = useContext(ProductsContext) as ProductsContextInterface;
+  const currentUser = useContext(UserContext) as Author;
   const { currentPage, getCurrentData, setPagePaginate, countPage } =
-    usePagination<Item>(products, PER_PAGE);
+  usePagination<Item>(products, PER_PAGE);
 
   function handlePageChange(e: any, page: number) {
     setPagePaginate(page);
@@ -38,11 +42,18 @@ const CardList: FC<ProductsCardListProps> = ({ products }) => {
                 sm={6}
                 md={4}
               >
-                <CardItem item={item} />
+                <CardItem key={item._id} {...item} />
               </Grid>
             ))}
           </Grid>
-          <Stack spacing={2} sx={{ marginTop: 2, alignItems: "center", justifyContent: "center" }}>
+          <Stack
+            spacing={2}
+            sx={{
+              marginTop: 2,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Typography> Страница {currentPage}</Typography>
             <Pagination
               count={countPage}

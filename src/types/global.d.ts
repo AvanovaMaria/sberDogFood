@@ -36,9 +36,14 @@ declare global {
         pictures?: string;
         isPublished?: boolean;
         tags?: string[];
-        likes?: string[];
+        likes: string[];
         reviews: Review[];
     }
+
+    interface ItemLikeParams {
+        likes: string[];
+        _id: string;
+    };
 
     interface ReviewAuthor {
         name?: string;
