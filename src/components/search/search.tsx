@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from '@mui/icons-material/Close';
 import InputBase from "@mui/material/InputBase";
 import { FC } from "react";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { searchProducts } from "../../services/products/productsSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -35,7 +36,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     height: "28px",
@@ -48,17 +48,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 interface SearchProps {
     setQuery: (value: string) => void;
+    value: string;
+    onReset: () => void
 }
 
-const SearchField: FC<SearchProps> = ({ setQuery }) => {
-    const [searchText, setSearchText] = useState<string>('');
+const SearchField: FC<SearchProps> = ({ setQuery, value, onReset }) => {
 
-    useEffect(() => {
-        setQuery(searchText);
-    }, [searchText]);
-
+  const dispatch = useAppDispatch();
     const handleChange = (e: any) => {
-        setSearchText(e.target.value);
+      setQuery(e.target.value);
+      dispatch(searchProducts(value));
     };
 
   return (
@@ -71,10 +70,9 @@ const SearchField: FC<SearchProps> = ({ setQuery }) => {
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
-        value={searchText} // жестко зафиксировали значение value у инпута
-        onChange={handleChange} // на каждое измение устанавливаем searchText
+        value={value} 
+        onChange={handleChange} 
       />
-     {/* {searchText && <button style={{}} type="button"><CloseIcon onClick={handleClick} /></button>} */}
     </Search>
   );
 };

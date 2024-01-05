@@ -1,24 +1,24 @@
-import { FC, useContext, useEffect } from "react";
-import { UserContext } from "../../context/user-context";
+import { FC, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { fetchUsers } from "../../services/user/userSlice";
+import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
-  const currentUser = useContext(UserContext) as Author;
-  //const currentUser = useAppSelector(state => state.user.data);
+  const currentUser = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
 
-  // console.log(currentUser);
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
+
+  if (!currentUser) return null;
 
   return (
     <>
@@ -41,6 +41,7 @@ const ProfilePage = () => {
           </Typography>
         </CardContent>
       </Card>
+      <Link to="/profile-edit">Изменить данные профиля</Link>
     </>
   );
 };

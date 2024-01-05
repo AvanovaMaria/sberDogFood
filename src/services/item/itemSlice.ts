@@ -1,14 +1,13 @@
 import { SerializedError, createSlice } from "@reduxjs/toolkit";
-import { ItemEditBodyDto } from "../../utils/api";
 import { createAppAsyncThunk } from '../hooks';
 
-type TItemState = {
-    data: Item | null;
-    loading: boolean;
-    error: SerializedError | null | unknown;
+interface Product {
+	data: Item | null
+	loading: boolean | null
+	error: SerializedError| null | unknown
 };
 
-const initialState: TItemState = {
+const initialState: Product = {
     data: null,
     loading: false,
     error: null,
@@ -16,38 +15,36 @@ const initialState: TItemState = {
 
 const itemSliceName = "item";
 
-// export const fetchItem = createAppAsyncThunk<Item> (
-//     `${itemSliceName}/fetchItem`,
-//     async(itemId, {fulfillWithValue, rejectWithValue, extra: api}) => {
-//         try {
-//             const data = await api.getProductById(itemId);
-//             return fulfillWithValue(data);
-//         } catch (error) {
-//             rejectWithValue(error);
-//         }
-//     }
-// );
+export const fetchItem = createAppAsyncThunk<Item, string> (
+    `${itemSliceName}/fetchItem`,
+    async(productID, {fulfillWithValue, rejectWithValue, extra: api}) => {
+        try {
+            const data = await api.getProductById(productID);
+            return fulfillWithValue(data);
+        } catch (error) {
+            rejectWithValue(error);
+        }
+    }
+);
 
-// console.log(fetchItem);
+export const ItemSlice = createSlice({
+    name: itemSliceName,
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+          .addCase(fetchItem.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(fetchItem.fulfilled, (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+          })
+          .addCase(fetchItem.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+          })
+      },
+});
 
-// export const ItemSlice = createSlice({
-//     name: itemSliceName,
-//     initialState,
-//     reducers: {},
-//     extraReducers: (builder) => {
-//         builder
-//           .addCase(fetchItem.pending, (state) => {
-//             state.loading = true;
-//           })
-//           .addCase(fetchItem.fulfilled, (state, action) => {
-//             state.loading = false;
-//             state.data = action.payload;
-//           })
-//           .addCase(fetchItem.rejected, (state, action) => {
-//             state.loading = false;
-//             state.error = action.payload;
-//           })
-//       },
-// });
-
-// export default ItemSlice.reducer;
+export default ItemSlice.reducer;

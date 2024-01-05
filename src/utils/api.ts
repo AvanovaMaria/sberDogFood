@@ -5,7 +5,10 @@ type TConfigApi = {
 	headers: HeadersInit;
 };
 
-export type UserEditBodyDto = Pick<Author, 'name' | 'about'>;
+export type UserEditBodyDto = {
+	about: string
+	name: string
+}
 export type ItemEditBodyDto = Pick<Item, '_id'>;
 
 export class Api {
@@ -25,10 +28,6 @@ export class Api {
 		return `${this.baseUrl}/${path}`;
 	}
 
-    getAllInfo() {
-		return Promise.all([this.getProductsList(), this.getUserInfo()]);
-	}
-
     getUserInfo() {
 		return fetch(this.getApiUrl('users/me'), {
 			headers: this.headers,
@@ -43,8 +42,10 @@ export class Api {
 		}).then(this.onResponse);
 	}
 
-    getProductsList() {
-		return fetch(this.getApiUrl('products'), {
+    getProductsList(payload: {
+		search?: string
+	}): Promise<FetchAllProducts> {
+		return fetch(this.getApiUrl(`products?query=${payload.search}`), {
 			headers: this.headers,
 		}).then(this.onResponse);
 	}
@@ -61,11 +62,18 @@ export class Api {
 		}).then(this.onResponse);
 	}
 
-	changeLikePostStatus(postID: string, like: boolean) {
-		return fetch(this.getApiUrl(`products/likes/${postID}`), {
-			method: like ? 'DELETE' : 'PUT',
+	addLikes(payload: { productId: string }) {
+		return fetch(this.getApiUrl(`/products/likes/${payload.productId}`), {
+			method: 'PUT',
 			headers: this.headers,
-		}).then(this.onResponse);
+		}).then(this.onResponse)
+	}
+
+	deleteLikes(payload: { productId: string }) {
+		return fetch(this.getApiUrl(`/products/likes/${payload.productId}`), {
+			method: 'DELETE',
+			headers: this.headers,
+		}).then(this.onResponse)
 	}
 
     addProducts(postData: Pick<Item, 'pictures' | 'price' | 'name' | 'description' | 'tags'>) {

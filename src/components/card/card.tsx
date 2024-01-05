@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {
   Card,
@@ -12,12 +12,9 @@ import {
   Button,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { isLiked } from "../../utils/products";
-import { UserContext } from "../../context/user-context";
-import {
-  ProductsContext,
-  ProductsContextInterface,
-} from "../../context/product-context";
+import { setColorForIcon } from "../../utils/cardItemUtils";
+import { useAppSelector, useAppDispatch } from "../../services/hooks";
+import { fetchUsers } from "../../services/user/userSlice";
 
 const CardItem: FC<Item> = ({
   _id,
@@ -28,20 +25,17 @@ const CardItem: FC<Item> = ({
   wight,
   name,
 }) => {
-  const currentUser = useContext(UserContext) as Author;
-  const { handleProductLike } = useContext(
-    ProductsContext
-  ) as ProductsContextInterface;
+  const [valueRating, setValueRating] = useState<number | null>(2);
+  const currentUser = useAppSelector((state) => state.user.data);
+  const dispatch = useAppDispatch();
 
-  const like = isLiked(likes, currentUser._id);
+  useEffect(() => {
+    dispatch(fetchUsers());
+  });
 
-  function setColorForIcon() {
-    var iconLikeColor = "";
-    like ? (iconLikeColor = "red") : (iconLikeColor = "black");
-    return iconLikeColor;
-  }
+  if (!currentUser) return null;
 
-  var discountNewContent;
+  let discountNewContent;
   if (discount !== 0) {
     discountNewContent = (
       <div
@@ -55,10 +49,6 @@ const CardItem: FC<Item> = ({
     discountNewContent = null;
   }
 
-  function onProductLike() {
-    handleProductLike({ likes, _id });
-  }
-
   return (
     <Card sx={{ width: 350 }}>
       <div
@@ -68,10 +58,13 @@ const CardItem: FC<Item> = ({
           justifyContent: "space-between",
         }}
       >
-        <div>{discountNewContent}</div>
+        <span>{discountNewContent}</span>
         <div>
-          <Button onClick={onProductLike}>
-            <FavoriteBorderIcon sx={{ color: setColorForIcon() }} fontSize="small" />
+          <Button>
+            <FavoriteBorderIcon
+              sx={{ color: setColorForIcon(likes, currentUser._id) }}
+              fontSize="small"
+            />
             {likes.length}
           </Button>
         </div>

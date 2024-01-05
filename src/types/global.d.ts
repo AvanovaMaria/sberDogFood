@@ -40,6 +40,11 @@ declare global {
         reviews: Review[];
     }
 
+    type FetchAllProducts = {
+		total: number
+		products: Card[]
+	}
+
     interface ItemLikeParams {
         likes: string[];
         _id: string;

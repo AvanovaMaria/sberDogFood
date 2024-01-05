@@ -1,9 +1,10 @@
 import { useState } from "react";
 
+const MIN_PAGE = 1;
+
 export default function usePagination<T>(data: T[], itemPerPage: number) {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const countPage = Math.ceil(data.length / itemPerPage);
-    const MIN_PAGE = 1;
 
     function getCurrentData() {
 		const start = (currentPage - 1) * itemPerPage;
