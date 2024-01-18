@@ -1,7 +1,6 @@
 import { SerializedError, createSlice } from "@reduxjs/toolkit";
 import { createAppAsyncThunk } from '../hooks';
 import { UserEditBodyDto } from '../../utils/api';
-//import { isActionPending, isActionRejected } from '../../utils/redux';
 
 type TUserState = {
   data: Author | null;

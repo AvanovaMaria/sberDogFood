@@ -8,6 +8,8 @@ import SearchField from "../search";
 import SingleItemPage from "../../pages/single-item-page";
 import ProfilePage from "../../pages/profile-page";
 import EditProfileForm from "../../pages/edit-profile-page";
+import { SignInPage } from "../../pages/sign-in-page/sign-in-page";
+import { SignUpForm } from "../../pages/sign-up-page/sign-up-page";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { fetchProducts } from "../../services/products/productsSlice";
 
@@ -35,6 +37,8 @@ const App = () => {
         <Route path="/product/:productId" element={<SingleItemPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile-edit" element={<EditProfileForm />} />
+        <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />

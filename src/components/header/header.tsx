@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,7 +8,7 @@ import Badge from "@mui/material/Badge";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-import {logo} from '../image/logo';
+import { logo } from "../image/logo";
 
 interface HeaderProps {
   children: any;
@@ -23,7 +23,7 @@ const Header: FC<HeaderProps> = ({ children }) => {
       >
         <Toolbar>
           <NavLink to="/">
-          <>{logo}</>
+            <>{logo}</>
           </NavLink>
           <Box sx={{ flexGrow: 3 }} />
           {children}
@@ -46,11 +46,17 @@ const Header: FC<HeaderProps> = ({ children }) => {
               aria-haspopup="true"
               sx={{ color: "black" }}
             >
-              <NavLink style={{ color: "black" }} to={{ pathname: `/profile` }}>
+              <NavLink
+                style={{ color: "black", marginRight: "10px" }}
+                to={{ pathname: `/profile` }}
+              >
                 <AccountCircle />
               </NavLink>
-              
             </IconButton>
+            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+              <NavLink to={{ pathname: `/sign-in` }}>Sign In</NavLink>
+              <NavLink to={{ pathname: `/sign-up` }}>Sign Up</NavLink>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>

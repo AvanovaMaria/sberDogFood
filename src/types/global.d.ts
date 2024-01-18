@@ -1,5 +1,7 @@
 export {};
 
+declare module 'yup';
+
 declare global {
     interface Author {
         name: string;
@@ -59,4 +61,9 @@ declare global {
         group?: string;
         __v?: number;
     }
+
+    interface Tokens {
+		accessToken: string
+		refreshToken: string
+	}
 }
