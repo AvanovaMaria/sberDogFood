@@ -9,12 +9,16 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import { logo } from "../image/logo";
+import { accessTokenSelector } from '../../services/authSlice/authSlice';
+import { useAppSelector } from '../../services/hooks';
 
 interface HeaderProps {
   children: any;
 }
 
 const Header: FC<HeaderProps> = ({ children }) => {
+  const accessToken = useAppSelector(accessTokenSelector);
+
   return (
     <Box sx={{ flexGrow: 2, height: "80px", width: "1440px" }}>
       <AppBar
@@ -39,7 +43,8 @@ const Header: FC<HeaderProps> = ({ children }) => {
                 <LocalMallIcon />
               </Badge>
             </IconButton>
-            <IconButton
+            {accessToken ? (
+              <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
@@ -53,10 +58,12 @@ const Header: FC<HeaderProps> = ({ children }) => {
                 <AccountCircle />
               </NavLink>
             </IconButton>
-            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+              ) : (
+                <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
               <NavLink to={{ pathname: `/sign-in` }}>Sign In</NavLink>
               <NavLink to={{ pathname: `/sign-up` }}>Sign Up</NavLink>
             </Box>
+              )}
           </Box>
         </Toolbar>
       </AppBar>

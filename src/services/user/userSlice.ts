@@ -1,10 +1,11 @@
 import { SerializedError, createSlice } from "@reduxjs/toolkit";
 import { createAppAsyncThunk } from '../hooks';
 import { UserEditBodyDto } from '../../utils/api';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 type TUserState = {
   data: Author | null;
-  loading: boolean;
+  loading: boolean | null;
   error: SerializedError | null | unknown;
 };
 
@@ -47,7 +48,14 @@ export const fetchEditedUser = createAppAsyncThunk<Author, UserEditBodyDto>(
 export const userSlice = createSlice({
   name: sliceName,
   initialState,
-  reducers: {},
+  reducers: {
+		setUser(_, action: PayloadAction<Author>) {
+			return { data: action.payload, loading: false, error: null }
+		},
+		clearUser() {
+			return { data: null, loading: false, error: null }
+		},
+	},
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -65,3 +73,4 @@ export const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
+export const { setUser, clearUser } = userSlice.actions;

@@ -1,4 +1,5 @@
-import { config } from './config';
+import { config, customBaseQuery } from './config';
+import { createApi } from '@reduxjs/toolkit/query/react';
 
 type TConfigApi = {
 	baseUrl: string;
@@ -10,6 +11,53 @@ export type UserEditBodyDto = {
 	name: string
 }
 export type ItemEditBodyDto = Pick<Item, '_id'>;
+
+type BE_SignUpResponse = Pick<Author, '_id'>;
+
+interface BE_SignInResponse {
+	data: BE_SignUpResponse
+	token: Tokens['accessToken']
+}
+
+type SignInResponse = {
+	data: Author
+	token: Tokens['accessToken']
+}
+
+interface SignInFormValues {
+	email: string
+	password: string
+}
+
+interface SignUpFormValues {
+	email: string
+	group: string
+	password: string
+}
+
+export const authApi = createApi({
+	reducerPath: 'authApi',
+	tagTypes: ['Author'],
+	baseQuery: customBaseQuery,
+	endpoints: (builder) => ({
+		signUp: builder.mutation<BE_SignUpResponse, SignUpFormValues>({
+			query: (signUpFormValues) => ({
+				url: '/signup',
+				method: 'POST',
+				body: signUpFormValues,
+			}),
+		}),
+		signIn: builder.mutation<SignInResponse, SignInFormValues>({
+			query: (signInFormValues) => ({
+				url: '/signin',
+				method: 'POST',
+				body: signInFormValues,
+			}),
+		}),
+	}),
+});
+
+export const { useSignUpMutation, useSignInMutation } = authApi;
 
 export class Api {
     private baseUrl;
@@ -35,7 +83,7 @@ export class Api {
 	}
 
 	setUserInfo(userData: UserEditBodyDto) {
-		return fetch(this.getApiUrl('/users/me/'), {
+		return fetch(this.getApiUrl('users/me/'), {
 			method: 'PATCH',
 			headers: this.headers,
 			body: JSON.stringify(userData),

@@ -16,6 +16,7 @@ import { setColorForIcon } from "../../utils/cardItemUtils";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { fetchUsers } from "../../services/user/userSlice";
 
+
 const CardItem: FC<Item> = ({
   _id,
   discount,
@@ -38,11 +39,8 @@ const CardItem: FC<Item> = ({
   let discountNewContent;
   if (discount !== 0) {
     discountNewContent = (
-      <div
-        style={{ borderRadius: "15px", backgroundColor: "red", color: "white" }}
-      >
-        {" "}
-        - {discount} %
+      <div style={{ borderRadius: "15px", backgroundColor: "red", color: "white" }}>
+        {" "} - {discount} %
       </div>
     );
   } else {

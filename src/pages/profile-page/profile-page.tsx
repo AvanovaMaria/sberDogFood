@@ -9,14 +9,27 @@ import { useSelector, useDispatch } from "react-redux";
 import { useAppSelector, useAppDispatch } from "../../services/hooks";
 import { fetchUsers } from "../../services/user/userSlice";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { clearUser } from "../../services/user/userSlice";
+import { clearTokens } from "../../services/authSlice/authSlice";
+import { batch } from "react-redux";
 
 const ProfilePage = () => {
   const currentUser = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
+
+  const onClickClearToken = () => {
+    batch(() => {
+      dispatch(clearTokens());
+      dispatch(clearUser());
+    });
+    navigate("/");
+  };
 
   if (!currentUser) return null;
 
@@ -42,6 +55,9 @@ const ProfilePage = () => {
         </CardContent>
       </Card>
       <Link to="/profile-edit">Изменить данные профиля</Link>
+      <Button variant="contained" onClick={onClickClearToken}>
+        Выйти из профиля
+      </Button>
     </>
   );
 };

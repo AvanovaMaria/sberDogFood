@@ -19,7 +19,7 @@ const CardList = (props: CardListProps) => {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.user.data);
   const { currentPage, getCurrentData, setPagePaginate, countPage } =
-    usePagination<Item>(products, PER_PAGE);
+  usePagination<Item>(products, PER_PAGE);
 
   useEffect(() => {
     dispatch(fetchUsers());
